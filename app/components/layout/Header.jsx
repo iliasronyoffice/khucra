@@ -35,7 +35,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-[#131921] text-white">
+    <header className="bg-[#131921] text-white sticky top-0 z-50 shadow-md">
       {/* Main Header */}
       <div className="flex items-center justify-between p-2 lg:p-4">
         {/* Logo */}

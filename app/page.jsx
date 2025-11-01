@@ -1,11 +1,10 @@
 import Image from "next/image";
+import Slider from "./(home)/Slider";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <h1 className="text-4xl font-bold text-zinc-800">
-        Welcome to Next.js!
-      </h1>
+    <div className="flex min-h-screen  justify-center font-sans">
+      <Slider />
     </div>
   );
 }
