@@ -204,16 +204,22 @@ export default function Footer() {
 
       {/* bottom copyright */}
       <div className="border-t border-gray-700 text-center py-4 text-sm flex-none  lg:flex justify-between items-center px-5 sm:px-10 lg:px-32 ">
-      <div>
-          © {new Date().getFullYear()} Khucra — All Rights Reserved.   
-      </div>
+        <div>© {new Date().getFullYear()} Khucra — All Rights Reserved.</div>
         <div className="payment-image">
-          <Image
+          {/* <Image
             src={payment_image}
             alt="Payment Methods"
             width={300}
             height={20}
             className="mx-auto mt-2"
+          /> */}
+
+          <Image
+            src={payment_image}
+            alt="payment Metods"
+            width={400}
+            height={30}
+            className="w-full h-auto rounded-t-xl object-cover"
           />
         </div>
       </div>

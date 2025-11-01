@@ -1,10 +1,12 @@
 import Image from "next/image";
 import Slider from "./(home)/Slider";
+import FeaturedProducts from "./(home)/FeaturedProducts";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen  justify-center font-sans">
+    <div className=" min-h-screen   font-sans">
       <Slider />
+      <FeaturedProducts />
     </div>
   );
 }
