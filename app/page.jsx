@@ -3,6 +3,7 @@ import Slider from "./(home)/Slider";
 import FeaturedProducts from "./(home)/FeaturedProducts";
 import BestDeals from "./(home)/BestDeals";
 import SecondBanner from "./(home)/SecondBanner";
+import JustForYou from "./(home)/JustForYou";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <FeaturedProducts />
       <SecondBanner />
       <BestDeals />
+      <JustForYou />
 
     </div>
   );
