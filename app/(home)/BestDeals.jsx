@@ -114,7 +114,7 @@ export default function BestDeals() {
   
   return (
     <div className="relative container mx-auto px-4 pt-12 mb-[300px]">
-      <div className="w-full h-[200px] md:h-[220px] lg:h-[350px] xl:h-[490px] xxl:h-[490px] sm:h-[200px] flex justify-center overflow-hidden rounded-2xl">
+      <div className="w-full h-[170px] sm:h-[250px] md:h-[225px] lg:h-[317px] xl:h-[409px] 2xl:h-[490px] flex justify-center overflow-hidden rounded-2xl">
         <Image
           src={best_deal}
           alt="Best Deal"
@@ -123,17 +123,17 @@ export default function BestDeals() {
         />
 
         {/* Floating Timer Box */}
-        <div className="absolute top-0 md:top-10 lg:top-5 2xl:top-0 left-1/2 -translate-x-1/2 px-4 py-2 flex flex-col items-center">
+        <div className="absolute top-0  left-1/2 -translate-x-1/2 px-4 py-2 flex flex-col items-center">
           <div className="border border-red-400 text-red-500 text-[13px] font-medium px-3 pt-[3px] rounded-full">
             Offer Ends In:
           </div>
-          <p className="text-black text-sm md:text-[15px] lg:text-[32px] xl:text-[45px] sm:text-2xl font-bold tracking-wider pt-4 md:pt-10">
+          <p className="text-black text-sm md:text-[15px] lg:text-[32px] xl:text-[45px] sm:text-2xl font-bold tracking-wider pt-3 md:pt-5">
             03d: 07h: 04m: 42s
           </p>
         </div>
 
         {/* Section Title */}
-        <div className="absolute top-[100px] sm:top-[220px] w-full text-center">
+        <div className="absolute top-[100px] md:top-[108px]  lg:top-[139px] xl:top-[180px] 2xl:top-[220px] sm:top-[100px] w-full text-center">
           <h2 className="text-2xl md:text-2xl lg:text-5xl sm:text-4xl font-bold uppercase text-black ">
             BEST DEALS OF THE WEEK!
           </h2>
