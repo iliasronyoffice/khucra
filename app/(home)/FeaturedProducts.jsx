@@ -113,7 +113,7 @@ export default function FeaturedProducts() {
   return (
     <div>
       <div className="featured-product-section container mx-auto px-4 py-8">
-        <div className="featured-header flex justify-between items-center mb-6">
+        <div className="featured-header flex justify-between items-center ">
           <div className="featured-title">
             <h2 className="text-3xl font-bold mb-4">Featured Products</h2>
           </div>

@@ -91,7 +91,33 @@
 }
 /* slider part end  */
 
-
+/* best deals design start */
+  /* Hide default Swiper navigation */
+        .featured-swiper .swiper-button-next,
+        .featured-swiper .swiper-button-prev {
+          display: none;
+        }
+        
+        /* Custom navigation hover effects */
+        .custom-prev:hover,
+        .custom-next:hover {
+          transform: translateY(-10%) scale(1.1);
+        }
+        
+        /* Disabled state for navigation */
+        .custom-prev.swiper-button-disabled,
+        .custom-next.swiper-button-disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          transform: translateY(-50%);
+        }
+        
+        .custom-prev.swiper-button-disabled:hover,
+        .custom-next.swiper-button-disabled:hover {
+          transform: translateY(-50%) scale(1);
+          background: white;
+        }
+/* best deals design end */
 
 
 body {
