@@ -12,7 +12,7 @@ export default function Product1({ item }) {
         </span>
       )}
       {item.tag && (
-        <span className="absolute top-0 right-0 z-30 bg-green-500 text-white text-xs font-semibold px-4 py-2 rounded-tr-xl rounded-bl-2xl overflow-hidden">
+        <span className="absolute top-0 right-0 z-30 bg-green-500 text-white text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1 md:py-2 rounded-tr-xl rounded-bl-2xl overflow-hidden">
           {item.tag}
         </span>
       )}
@@ -28,7 +28,7 @@ export default function Product1({ item }) {
         />
       </div>
 
-      <div className="text-part p-4">
+      <div className="text-part md:p-4 p-2 ">
         <p className="text-[11px] text-gray-500">{item.sold} Items Sold</p>
         <p className="text-[11px] text-purple-600 font-medium">
           {item.category}
@@ -45,7 +45,7 @@ export default function Product1({ item }) {
         <div className="price-and-cart flex justify-between items-center mt-3">
           {/* Price */}
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg">৳{item.price}</span>
+            <span className="font-bold md:text-lg text-xs ">৳{item.price}</span>
             {item.oldPrice && (
               <span className="text-sm text-gray-400 line-through">
                 ৳{item.oldPrice}

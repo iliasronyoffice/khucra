@@ -603,11 +603,13 @@ export default function JustForYou() {
     <div>
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-5">
-          <h2 className="text-3xl font-semibold">Just For You</h2>
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-3 mb-5">
+          <h2 className="text-xl sm:text-xl md:text-3xl font-semibold">
+            Just For You
+          </h2>
 
           {/* Tabs */}
-          <div className="flex gap-2 bg-gray-100 p-1 rounded-xl">
+          <div className="flex flex-wrap gap-2 bg-gray-100 p-1 rounded-xl w-full md:w-auto">
             {tabs.map((tab) => (
               <button
                 key={tab}
@@ -615,12 +617,12 @@ export default function JustForYou() {
                   setActiveTab(tab);
                   setVisibleCount(10);
                 }}
-                className={`px-4 py-1 rounded-lg text-sm font-medium
-                ${
-                  activeTab === tab
-                    ? "bg-white text-black shadow-md"
-                    : "text-gray-700 hover:bg-gray-200"
-                }`}
+                className={`px-4 py-1 rounded-lg text-sm font-medium w-auto
+          ${
+            activeTab === tab
+              ? "bg-white text-black shadow-md"
+              : "text-gray-700 hover:bg-gray-200"
+          }`}
               >
                 {tab}
               </button>

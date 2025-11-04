@@ -99,25 +99,46 @@
         }
         
         /* Custom navigation hover effects */
-        .custom-prev:hover,
-        .custom-next:hover {
+        .custom-seller-prev:hover,
+        .custom-seller-next:hover {
           transform: translateY(-10%) scale(1.1);
         }
         
         /* Disabled state for navigation */
-        .custom-prev.swiper-button-disabled,
-        .custom-next.swiper-button-disabled {
+        .custom-seller-prev.swiper-button-disabled,
+        .custom-seller-next.swiper-button-disabled {
           opacity: 0.5;
           cursor: not-allowed;
           transform: translateY(-50%);
         }
         
-        .custom-prev.swiper-button-disabled:hover,
-        .custom-next.swiper-button-disabled:hover {
+        .custom-seller-prev.swiper-button-disabled:hover,
+        .custom-seller-next.swiper-button-disabled:hover {
           transform: translateY(-50%) scale(1);
           background: white;
         }
 /* best deals design end */
+
+
+
+
+/* top sellers design start */
+  /* Hide default Swiper navigation */
+      /* Hide default Swiper nav */
+.custom-seller-prev,
+.custom-seller-next {
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
+
+.custom-seller-prev.swiper-button-disabled,
+.custom-seller-next.swiper-button-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+
+/* top sellers design end */
 
 
 body {
