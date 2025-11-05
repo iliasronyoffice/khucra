@@ -48,8 +48,6 @@
 }
 
 /* Pagination bullets as radio buttons:
-   Swiper uses .swiper-pagination-bullet; override size & border */
-/* Outer circle */
 /* Fix pagination container */
 .swiper-pagination {
   display: flex !important; /* horizontal layout */
@@ -135,6 +133,22 @@
 }
 
 /* top sellers design end */
+
+
+/* gallery section css  */
+   .gallery-swiper-custom {
+          padding: 10px 40px;
+        }
+        .swiper-button-prev-custom,
+        .swiper-button-next-custom {
+          opacity: 0;
+          transition: all 0.3s ease;
+        }
+        .galleries:hover .swiper-button-prev-custom,
+        .galleries:hover .swiper-button-next-custom {
+          opacity: 1;
+        }
+/* gallery section end  */
 
 body {
   background: var(--background);

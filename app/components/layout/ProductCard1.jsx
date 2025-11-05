@@ -1,10 +1,13 @@
-// components/Product1.jsx
+
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Product1({ item }) {
   return (
     <div className="bg-white border border-[#F1F1FE] my-2 shadow-sm rounded-xl hover:shadow-2xl duration-300 relative group cursor-pointer">
+      
+      <Link href={`/Products/${item.slug}`}>
       {/* Discount & New Badge */}
       {item.discount && (
         <span className="absolute top-0 right-0 z-30 bg-red-500 text-white text-xs font-semibold px-4 py-2 rounded-tr-xl rounded-bl-2xl overflow-hidden">
@@ -107,6 +110,7 @@ export default function Product1({ item }) {
           </svg>
         </button>
       </div>
+      </Link>
     </div>
   );
 }

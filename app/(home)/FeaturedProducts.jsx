@@ -34,6 +34,7 @@ export default function FeaturedProducts() {
   const products = [
     {
       id: 1,
+      slug:"galaxy-s22-ultra",
       title: "Galaxy S22 Ultra",
       img: product1,
       category: "Mobile & Accessories",
@@ -45,6 +46,7 @@ export default function FeaturedProducts() {
     },
     {
       id: 2,
+      slug:"2ghz-router",
       title: "2Ghz Router",
       img: product2,
       category: "Internet & Web",
@@ -54,6 +56,7 @@ export default function FeaturedProducts() {
     },
     {
       id: 3,
+      slug:"cat-carrier-bag",
       title: "Cat Carrier Bag",
       img: product3,
       category: "Pet Accessories",
@@ -64,6 +67,7 @@ export default function FeaturedProducts() {
     },
     {
       id: 4,
+      slug:"smart-hand-fan",
       title: "Smart Hand Fan",
       img: product4,
       category: "Electronics",
@@ -73,6 +77,7 @@ export default function FeaturedProducts() {
     },
     {
       id: 5,
+      slug:"hand-scissor",
       title: "Hand Scissor",
       img: product5,
       category: "Home Appliance",
@@ -84,6 +89,7 @@ export default function FeaturedProducts() {
     },
     {
       id: 6,
+      slug:"vr-box",
       title: "VR BOX 2.0",
       img: product6,
       category: "Gadget & Accessories",
@@ -93,6 +99,7 @@ export default function FeaturedProducts() {
     },
     {
       id: 7,
+      slug:"television",
       title: "Television",
       img: product7,
       category: "tech & Accessories",
@@ -102,7 +109,8 @@ export default function FeaturedProducts() {
     },
     {
       id: 8,
-      title: "Television",
+      slug:"telivision2",
+      title: "Television 2",
       img: product8,
       category: "tech & Accessories",
       sold: "22",

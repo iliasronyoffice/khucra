@@ -35,6 +35,7 @@ export default function CategoryWiseProducts() {
     {
       id: 1,
       title: "Galaxy S22 Ultra",
+      slug: "galaxy-s22-ultra",
       img: product1,
       category: "Mobile & Accessories",
       categoryId: 1,
@@ -47,6 +48,7 @@ export default function CategoryWiseProducts() {
     {
       id: 2,
       title: "2Ghz Router",
+      slug: "2ghz-router",
       img: product2,
       category: "Internet & Web",
       categoryId: 2,
@@ -57,6 +59,7 @@ export default function CategoryWiseProducts() {
     {
       id: 3,
       title: "Cat Carrier Bag",
+      slug: "cat-carrier-bag",
       img: product3,
       category: "Pet Accessories",
       categoryId: 3,
@@ -68,6 +71,7 @@ export default function CategoryWiseProducts() {
     {
       id: 4,
       title: "Smart Hand Fan",
+      slug: "smart-hand-fan",
       img: product4,
       category: "Electronics",
       categoryId: 4,
@@ -78,6 +82,7 @@ export default function CategoryWiseProducts() {
     {
       id: 5,
       title: "Hand Scissor",
+      slug: "hand-scissor",
       img: product5,
       category: "Home Appliance",
       categoryId: 5,
@@ -90,6 +95,7 @@ export default function CategoryWiseProducts() {
     {
       id: 6,
       title: "VR BOX 2.0",
+      slug: "vr-box-2-0",
       img: product6,
       category: "Gadget & Accessories",
       categoryId: 6,
@@ -100,6 +106,7 @@ export default function CategoryWiseProducts() {
     {
       id: 7,
       title: "Television",
+      slug: "television",
       img: product7,
       category: "Tech & Accessories",
       categoryId: 7,
@@ -110,6 +117,7 @@ export default function CategoryWiseProducts() {
     {
       id: 8,
       title: "Wireless Headphones",
+      slug: "wireless-headphones",
       img: product8,
       category: "Mobile & Accessories",
       categoryId: 1,
@@ -122,6 +130,7 @@ export default function CategoryWiseProducts() {
     {
       id: 9,
       title: "5G Router",
+      slug: "5g-router",
       img: product1,
       category: "Internet & Web",
       categoryId: 2,
@@ -132,6 +141,7 @@ export default function CategoryWiseProducts() {
     {
       id: 10,
       title: "Dog Bed",
+      slug: "dog-bed",
       img: product2,
       category: "Pet Accessories",
       categoryId: 3,
@@ -143,6 +153,7 @@ export default function CategoryWiseProducts() {
     {
       id: 11,
       title: "Smart Watch",
+      slug: "smart-watch",
       img: product3,
       category: "Electronics",
       categoryId: 4,
@@ -155,6 +166,7 @@ export default function CategoryWiseProducts() {
     {
       id: 12,
       title: "Blender",
+      slug: "blender",
       img: product4,
       category: "Home Appliance",
       categoryId: 1,
@@ -162,10 +174,10 @@ export default function CategoryWiseProducts() {
       seller: "Home Pro",
       price: 2200,
     },
-
-     {
+    {
       id: 13,
       title: "Galaxy S22 Ultra",
+      slug: "galaxy-s22-ultra-2",
       img: product1,
       category: "Mobile & Accessories",
       categoryId: 1,
@@ -178,6 +190,7 @@ export default function CategoryWiseProducts() {
     {
       id: 14,
       title: "2Ghz Router",
+      slug: "2ghz-router-2",
       img: product2,
       category: "Internet & Web",
       categoryId: 2,
@@ -188,6 +201,7 @@ export default function CategoryWiseProducts() {
     {
       id: 15,
       title: "Cat Carrier Bag",
+      slug: "cat-carrier-bag-2",
       img: product3,
       category: "Pet Accessories",
       categoryId: 1,
@@ -199,6 +213,7 @@ export default function CategoryWiseProducts() {
     {
       id: 16,
       title: "Smart Hand Fan",
+      slug: "smart-hand-fan-2",
       img: product4,
       category: "Electronics",
       categoryId: 1,
@@ -209,6 +224,7 @@ export default function CategoryWiseProducts() {
     {
       id: 17,
       title: "Hand Scissor",
+      slug: "hand-scissor-2",
       img: product5,
       category: "Home Appliance",
       categoryId: 2,
@@ -221,6 +237,7 @@ export default function CategoryWiseProducts() {
     {
       id: 18,
       title: "VR BOX 2.0",
+      slug: "vr-box-2-0-2",
       img: product6,
       category: "Gadget & Accessories",
       categoryId: 1,
@@ -231,6 +248,7 @@ export default function CategoryWiseProducts() {
     {
       id: 19,
       title: "Television",
+      slug: "television-2",
       img: product7,
       category: "Tech & Accessories",
       categoryId: 2,
@@ -241,6 +259,7 @@ export default function CategoryWiseProducts() {
     {
       id: 20,
       title: "Wireless Headphones",
+      slug: "wireless-headphones-2",
       img: product8,
       category: "Mobile & Accessories",
       categoryId: 1,
@@ -253,6 +272,7 @@ export default function CategoryWiseProducts() {
     {
       id: 21,
       title: "5G Router",
+      slug: "5g-router-2",
       img: product1,
       category: "Internet & Web",
       categoryId: 2,
@@ -263,6 +283,7 @@ export default function CategoryWiseProducts() {
     {
       id: 22,
       title: "Dog Bed",
+      slug: "dog-bed-2",
       img: product2,
       category: "Pet Accessories",
       categoryId: 2,
@@ -274,6 +295,7 @@ export default function CategoryWiseProducts() {
     {
       id: 23,
       title: "Smart Watch",
+      slug: "smart-watch-2",
       img: product3,
       category: "Electronics",
       categoryId: 1,
@@ -286,6 +308,7 @@ export default function CategoryWiseProducts() {
     {
       id: 24,
       title: "Blender",
+      slug: "blender-2",
       img: product4,
       category: "Home Appliance",
       categoryId: 2,
@@ -296,25 +319,28 @@ export default function CategoryWiseProducts() {
   ];
 
   // Filter categories based on selected IDs
-  const selectedCategories = categories.filter(category => 
+  const selectedCategories = categories.filter((category) =>
     selectedCategoryIds.includes(category.id)
   );
 
   // Get products for each category
   const getProductsByCategory = (categoryId) => {
-    return products.filter(product => product.categoryId === categoryId);
+    return products.filter((product) => product.categoryId === categoryId);
   };
 
   // Initialize progress bars for each swiper
   useEffect(() => {
     selectedCategories.forEach((category) => {
-      const swiper = document.querySelector(`.category-swiper-${category.id}`)?.swiper;
+      const swiper = document.querySelector(
+        `.category-swiper-${category.id}`
+      )?.swiper;
       if (!swiper) return;
 
       swiper.on("slideChange", () => {
         const productsInCategory = getProductsByCategory(category.id);
         const progress =
-          (swiper.activeIndex / (productsInCategory.length - swiper.params.slidesPerView)) *
+          (swiper.activeIndex /
+            (productsInCategory.length - swiper.params.slidesPerView)) *
           100;
         const bar = document.getElementById(`category-progress-${category.id}`);
         if (bar) bar.style.width = `${Math.min(progress, 100)}%`;
@@ -326,14 +352,19 @@ export default function CategoryWiseProducts() {
     <div>
       {selectedCategories.map((category) => {
         const categoryProducts = getProductsByCategory(category.id);
-        
+
         if (categoryProducts.length === 0) return null;
 
         return (
-          <div key={category.id} className="category-product-section container mx-auto px-4 py-8">
+          <div
+            key={category.id}
+            className="category-product-section container mx-auto px-4 py-8"
+          >
             <div className="category-header flex justify-between items-center">
               <div className="category-title">
-                <h2 className="text-xl md:text-3xl font-bold mb-4">{category.name}</h2>
+                <h2 className="text-xl md:text-3xl font-bold mb-4">
+                  {category.name}
+                </h2>
               </div>
               <div className="see-all-section">
                 <span className="flex items-center gap-2 cursor-pointer bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition">
@@ -355,7 +386,10 @@ export default function CategoryWiseProducts() {
                       />
                     </svg>
                   </span>
-                  <Link href={`/category/${category.id}`} className="hover:underline">
+                  <Link
+                    href={`/category/${category.id}`}
+                    className="hover:underline"
+                  >
                     See All
                   </Link>
                 </span>
@@ -387,8 +421,8 @@ export default function CategoryWiseProducts() {
 
               {/* Bottom Indicator Line for each category */}
               <div className="w-full h-[2px] bg-gray-200 mt-6">
-                <div 
-                  id={`category-progress-${category.id}`} 
+                <div
+                  id={`category-progress-${category.id}`}
                   className="h-full bg-black w-0 transition-all duration-300"
                 ></div>
               </div>
