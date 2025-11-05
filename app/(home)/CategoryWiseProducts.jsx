@@ -333,7 +333,7 @@ export default function CategoryWiseProducts() {
           <div key={category.id} className="category-product-section container mx-auto px-4 py-8">
             <div className="category-header flex justify-between items-center">
               <div className="category-title">
-                <h2 className="text-3xl font-bold mb-4">{category.name}</h2>
+                <h2 className="text-xl md:text-3xl font-bold mb-4">{category.name}</h2>
               </div>
               <div className="see-all-section">
                 <span className="flex items-center gap-2 cursor-pointer bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition">
