@@ -5,6 +5,8 @@ import BestDeals from "./(home)/BestDeals";
 import SecondBanner from "./(home)/SecondBanner";
 import JustForYou from "./(home)/JustForYou";
 import TopSellers from "./(home)/TopSellers";
+import OurBrands from "./(home)/OurBrands";
+import CategoryWiseProducts from "./(home)/CategoryWiseProducts";
 
 export default function Home() {
   return (
@@ -14,8 +16,9 @@ export default function Home() {
       <SecondBanner />
       <BestDeals />
       <JustForYou />
+      <CategoryWiseProducts/>
       <TopSellers />
-
+      <OurBrands />
     </div>
   );
 }
