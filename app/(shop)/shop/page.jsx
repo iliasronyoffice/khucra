@@ -15,7 +15,7 @@ import Breadcrumb from "@/app/components/layout/Breadcrumb";
 
 import SidebarContent from "@/app/components/layout/SidebarContent";
 
-export default function Search() {
+export default function Shop() {
   const [showFilter, setShowFilter] = useState(false);
 
   const products = [
@@ -121,9 +121,11 @@ export default function Search() {
         <section className="flex-1">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
             {/* Title */}
-            <h2 className="text-lg font-semibold flex items-center gap-2">
-              Search Product Name
+            <h2 className="text-xl font-semibold flex flex-col items-start gap-2">
+              All Products
+              <span className="text-sm text-gray-300 font-normal">1058 Products</span>
             </h2>
+            
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {/* Mobile filter icon */}
