@@ -3,6 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --main: #19073B;
+
 }
 
 @theme inline {
@@ -10,6 +12,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-main: var(--main); 
 }
 
 @media (prefers-color-scheme: dark) {
@@ -134,21 +137,32 @@
 
 /* top sellers design end */
 
-
 /* gallery section css  */
-   .gallery-swiper-custom {
-          padding: 10px 40px;
-        }
-        .swiper-button-prev-custom,
-        .swiper-button-next-custom {
-          opacity: 0;
-          transition: all 0.3s ease;
-        }
-        .galleries:hover .swiper-button-prev-custom,
-        .galleries:hover .swiper-button-next-custom {
-          opacity: 1;
-        }
+.gallery-swiper-custom {
+  padding: 10px 40px;
+}
+.swiper-button-prev-custom,
+.swiper-button-next-custom {
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.galleries:hover .swiper-button-prev-custom,
+.galleries:hover .swiper-button-next-custom {
+  opacity: 1;
+}
 /* gallery section end  */
+
+/* image gallery section start  */
+/* Hide scrollbar for Chrome, Safari, and Edge */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for Firefox */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+/* image gallery section end  */
 
 body {
   background: var(--background);

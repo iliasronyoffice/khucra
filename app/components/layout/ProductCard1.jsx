@@ -57,7 +57,7 @@ export default function Product1({ item }) {
           </div>
 
           {/* Add Cart Button */}
-          <button className="flex items-center gap-1 bg-[#240d4e] text-white text-[12px] font-medium px-3 py-1 rounded-md hover:bg-[#150435] transition">
+          <button className="flex items-center gap-1 bg-main text-white text-[12px] font-medium px-3 py-1 rounded-md hover:bg-[#150435] transition">
             <svg
               width="11"
               height="9"
