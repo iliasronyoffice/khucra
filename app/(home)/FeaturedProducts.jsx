@@ -14,37 +14,85 @@ export default function FeaturedProducts() {
   const [error, setError] = useState(null);
 
   // Fetch featured products from API
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v2/products/featured`;
+  //       const res = await fetch(apiUrl, {
+  //         method: "GET",
+  //         headers: {
+  //           "Accept": "application/json",
+  //           "Content-Type": "application/json",
+  //         },
+  //         credentials: 'omit',
+  //         mode: 'cors',
+  //       });
+
+  //       if (!res.ok) {
+  //         throw new Error(`HTTP error! status: ${res.status}`);
+  //       }
+
+  //       const data = await res.json();
+  //       console.log(" API Response:", data);
+
+  //       if (data.success && data.data) {
+  //         setProducts(data.data);
+  //         setError(null);
+  //       } else {
+  //         throw new Error("Invalid response format from API");
+  //       }
+
+  //     } catch (error) {
+  //       console.error(" Error fetching products:", error);
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchProducts();
+  // }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
+      // Check cache first
+      const cacheKey = 'featured-products';
+      const cached = localStorage.getItem(cacheKey);
+      const cacheTime = localStorage.getItem(`${cacheKey}-time`);
+      
+      // Use cache if less than 5 minutes old
+      if (cached && cacheTime && Date.now() - cacheTime < 5 * 60 * 1000) {
+        setProducts(JSON.parse(cached));
+        setLoading(false);
+        return;
+      }
+
       try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v2/products/featured`;
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/products/featured`;
         const res = await fetch(apiUrl, {
           method: "GET",
           headers: {
             "Accept": "application/json",
-            "Content-Type": "application/json",
           },
           credentials: 'omit',
-          mode: 'cors',
         });
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
         const data = await res.json();
-        console.log(" API Response:", data);
-
+        
         if (data.success && data.data) {
           setProducts(data.data);
-          setError(null);
-        } else {
-          throw new Error("Invalid response format from API");
+          // Cache the response
+          localStorage.setItem(cacheKey, JSON.stringify(data.data));
+          localStorage.setItem(`${cacheKey}-time`, Date.now());
         }
-
       } catch (error) {
-        console.error(" Error fetching products:", error);
-        setError(error.message);
+        console.error("Error fetching products:", error);
+        // Fallback to cache even if expired
+        if (cached) {
+          setProducts(JSON.parse(cached));
+        }
       } finally {
         setLoading(false);
       }
@@ -125,7 +173,7 @@ export default function FeaturedProducts() {
       {error && (
         <div className="container mx-auto px-4">
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm text-center">
-            <div className="font-semibold">⚠️ API Error</div>
+            <div className="font-semibold"> API Error</div>
             <div>{error}</div>
           </div>
         </div>
@@ -133,9 +181,9 @@ export default function FeaturedProducts() {
 
       {/* Loading State */}
       {loading && (
-         <div className="flex justify-center items-center h-40">
-        <div className="w-12 h-12 border-4 border-main border-dashed rounded-full animate-spin"></div>
-      </div>
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-main"></div>
+        </div>
       )}
 
       {/* Product Swiper */}
@@ -159,20 +207,7 @@ export default function FeaturedProducts() {
             {products.map((item) => (
               <SwiperSlide key={item.id}>
                 <ProductCard1
-                  item={{
-                    id: item.id,
-                    slug: item.slug,
-                    title: item.name,
-                    img: item.thumbnail_image,
-                    price: item.main_price,
-                    oldPrice: item.stroked_price,
-                    discount: item.discount,
-                    sold: item.sales,
-                    rating: item.rating,
-                    category: "",
-                    seller: "",
-                    added_by: item.added_by,
-                  }}
+                  item={item}
                 />
               </SwiperSlide>
             ))}

@@ -8,41 +8,52 @@ export default function ProductCard1({ item }) {
     <div className="bg-white border border-[#F1F1FE] my-2 shadow-sm rounded-xl hover:shadow-2xl duration-300 relative group cursor-pointer">
       <Link href={`/Products/${item.slug}`}>
         {/* Discount & New Badge */}
-        {item.discount && (
+        {item.discount && item.discount != "-0%" && (
           <span className="absolute top-0 right-0 z-30 bg-red-500 text-white text-xs font-semibold px-4 py-2 rounded-tr-xl rounded-bl-2xl overflow-hidden">
             {item.discount}
           </span>
         )}
-        {item.tag && (
+        {/* {item.tag && (
           <span className="absolute top-0 right-0 z-30 bg-green-500 text-white text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1 md:py-2 rounded-tr-xl rounded-bl-2xl overflow-hidden">
             {item.tag}
           </span>
-        )}
+        )} */}
 
         {/* Product Image */}
         <div className="w-full aspect-[4/3] relative">
           <Image
-            src={item.img}
-            alt={item.title}
+            src={item.thumbnail_image}
+            alt={item.name}
             width={400}
             height={300}
             className="w-full h-auto rounded-t-xl object-cover"
           />
         </div>
 
-        <div className="text-part 2xl:p-4 md:p-2 p-2 ">
-          <p className="text-[11px] text-gray-500">{item.sold} Items Sold</p>
+        <div className="text-part 2xl:p-3 md:p-2 p-2 ">
+          <p className="text-[11px] text-gray-500">{item.sales} Items Sold</p>
           <p className="text-[11px] text-purple-600 font-medium">
             {item.category}
           </p>
 
           <h4 className="text-[13px] font-semibold mt-1 h-10 overflow-hidden">
-            {TruncateWords(item.title, 9)}
+            {TruncateWords(item.name, 9)}
           </h4>
 
           {/* Rating */}
-          <div className="flex items-center text-yellow-400 text-xs">
-            ★★★★★ <span className="text-gray-400 ml-1">(5.0)</span>
+          <div className="flex items-center text-xs">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span key={star}>
+                {item.rating >= star ? (
+                  <span className="text-yellow-400">★</span>
+                ) : item.rating >= star - 0.5 ? (
+                  <span className="text-yellow-400/70">★</span>
+                ) : (
+                  <span className="text-gray-300">★</span>
+                )}
+              </span>
+            ))}
+            <span className="text-gray-500 ml-1">({item.rating})</span>
           </div>
 
           <p className="text-[11px] text-gray-500 mb-1">By {item.added_by}</p>
@@ -50,11 +61,11 @@ export default function ProductCard1({ item }) {
             {/* Price */}
             <div className="flex items-center gap-1">
               <span className="font-bold md:text-[12px] 2xl:text-[15px] text-xs ">
-                {item.price}
+                {item.main_price}
               </span>
-              {item.oldPrice && (
+              {item.stroked_price && (
                 <span className="text-xs text-gray-400 line-through md:text-[10px] 2xl:text-[12px]">
-                  {item.oldPrice}
+                  {item.stroked_price}
                 </span>
               )}
             </div>

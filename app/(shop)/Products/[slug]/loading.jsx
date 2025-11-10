@@ -11,7 +11,6 @@
 //   );
 // }
 
-
 export default function Loading() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
@@ -21,11 +20,9 @@ export default function Loading() {
         <div className="absolute inset-0 blur-xl bg-blue-400/30 rounded-full"></div>
       </div>
 
-      <p className="mt-6 text-gray-700 text-lg font-semibold tracking-wide">
-        Loading...
-      </p>
+      <div className="flex justify-center items-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-main"></div>
+      </div>
     </div>
   );
 }
-
-

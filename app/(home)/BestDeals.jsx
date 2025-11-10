@@ -18,56 +18,108 @@ export default function BestDeals() {
   const [error, setError] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
 
-// Countdown effect
-useEffect(() => {
-  if (!flashDeals.length) return;
+  // Cache configuration
+  const CACHE_DURATION = 2 * 60 * 1000; // 2 minutes cache for flash deals
 
-  // Assuming you use the *first deal’s* date for countdown
-  const endDate = new Date(flashDeals[0].date * 1000).getTime();
-
-  const timer = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = endDate - now;
-
-    if (distance <= 0) {
-      clearInterval(timer);
-      setTimeLeft("Expired");
-      return;
+  // Fetch with caching and timeout
+  const fetchWithCache = async (url, cacheKey, timeout = 8000) => {
+    // Check cache first
+    const cached = localStorage.getItem(cacheKey);
+    const cacheTime = localStorage.getItem(`${cacheKey}-time`);
+    
+    // Use cache if less than CACHE_DURATION old
+    if (cached && cacheTime) {
+      const cacheAge = Date.now() - parseInt(cacheTime);
+      if (cacheAge < CACHE_DURATION) {
+        console.log(` Using cached ${cacheKey} (${Math.round(cacheAge/1000)}s old)`);
+        return JSON.parse(cached);
+      } else {
+        console.log(` Cache expired for ${cacheKey} (${Math.round(cacheAge/1000)}s old)`);
+      }
     }
 
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor(
-      (distance % (1000 * 60 * 60)) / (1000 * 60)
-    );
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    // Fetch with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
 
-    setTimeLeft(`${days}d: ${hours}h: ${minutes}m: ${seconds}s`);
-  }, 1000);
+    try {
+      const response = await fetch(url, {
+        signal: controller.signal,
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        mode: "cors",
+      });
 
-  return () => clearInterval(timer);
-}, [flashDeals]);
+      clearTimeout(timeoutId);
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-  // Fetch flash deals from API
+      const data = await response.json();
+      
+      // Cache successful response
+      if (data?.success) {
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+        localStorage.setItem(`${cacheKey}-time`, Date.now().toString());
+        console.log(` Cached fresh data for ${cacheKey}`);
+      }
+      
+      return data;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      
+      // Fallback to cache even if expired when fetch fails
+      if (cached) {
+        console.warn(` Using expired cache for ${cacheKey} due to:`, error.message);
+        return JSON.parse(cached);
+      }
+      throw error;
+    }
+  };
+
+  // Countdown effect
+  useEffect(() => {
+    if (!flashDeals.length) return;
+
+    // Assuming you use the *first deal's* date for countdown
+    const endDate = new Date(flashDeals[0].date * 1000).getTime();
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = endDate - now;
+
+      if (distance <= 0) {
+        clearInterval(timer);
+        setTimeLeft("Expired");
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor(
+        (distance % (1000 * 60 * 60)) / (1000 * 60)
+      );
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      setTimeLeft(`${days}d: ${hours}h: ${minutes}m: ${seconds}s`);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [flashDeals]);
+
+  // Fetch flash deals from API with caching
   useEffect(() => {
     const fetchDeals = async () => {
       try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v2/flash-deals`;
-        const res = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          mode: "cors",
-        });
+        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/flash-deals`;
+        const data = await fetchWithCache(apiUrl, "flash-deals", 8000);
 
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-        const data = await res.json();
         console.log("Flash Deals API Response:", data);
 
         if (data.success && data.data) {
@@ -86,6 +138,20 @@ useEffect(() => {
       } catch (err) {
         console.error("Error fetching flash deals:", err);
         setError(err.message);
+        
+        // Final fallback - try to use any available cache
+        const cached = localStorage.getItem("flash-deals");
+        if (cached) {
+          const cachedData = JSON.parse(cached);
+          if (cachedData?.success && cachedData?.data) {
+            setFlashDeals(cachedData.data);
+            const merged = cachedData.data.flatMap(
+              (deal) => deal.products?.data || []
+            );
+            setAllProducts(merged);
+            setError(null);
+          }
+        }
       } finally {
         setLoading(false);
       }
@@ -94,8 +160,9 @@ useEffect(() => {
     fetchDeals();
   }, []);
 
+  // Swiper progress effect
   useEffect(() => {
-    const swiper = document.querySelector(".featured-swiper")?.swiper;
+    const swiper = document.querySelector(".best-deal-swiper")?.swiper;
     if (!swiper) return;
 
     swiper.on("slideChange", () => {
@@ -103,101 +170,125 @@ useEffect(() => {
         (swiper.activeIndex /
           (flashDeals.length - swiper.params.slidesPerView)) *
         100;
-      const bar = document.getElementById("featured-progress");
-      if (bar) bar.style.width = `${progress}%`;
+      // const bar = document.getElementById("featured-progress");
+      // if (bar) bar.style.width = `${progress}%`;
     });
-  }, []);
+  }, [flashDeals]);
 
-  
+  // Clear cache function (development only)
+  const clearCache = () => {
+    localStorage.removeItem("flash-deals");
+    localStorage.removeItem("flash-deals-time");
+    console.log("Flash deals cache cleared");
+    // Optional: reload the data
+    setLoading(true);
+    setTimeout(() => window.location.reload(), 500);
+  };
 
   return (
     <div className="relative container mx-auto px-4 pt-12 mb-[300px]">
+      {/* Debug button - only in development */}
+      {/* {process.env.NODE_ENV === 'development' && (
+        <div className="fixed bottom-4 left-4 z-50">
+          <button
+            onClick={clearCache}
+            className="bg-red-500 text-white px-3 py-1 rounded text-xs opacity-50 hover:opacity-100"
+            title="Clear flash deals cache"
+          >
+            Clear Cache
+          </button>
+        </div>
+      )} */}
+
       <div className="w-full h-[170px] sm:h-[250px] md:h-[225px] lg:h-[317px] xl:h-[409px] 2xl:h-[490px] flex justify-center overflow-hidden rounded-2xl">
         <Image
           src={best_deal}
           alt="Best Deal"
           className="object-contain object-cover"
           fill
+          priority
         />
 
         {/* Floating Timer Box */}
-        <div className="absolute top-0  left-1/2 -translate-x-1/2 px-4 py-2 flex flex-col items-center">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-2 flex flex-col items-center">
           <div className="border border-red-400 text-red-500 text-[13px] font-medium px-3 pt-[3px] rounded-full">
             Offer Ends In:
           </div>
           <p className="text-black text-sm md:text-[15px] lg:text-[32px] xl:text-[45px] sm:text-2xl font-bold tracking-wider pt-3 md:pt-5">
-            {/* 03d: 07h: 04m: 42s */}
             {timeLeft || "Loading..."}
           </p>
         </div>
 
         {/* Section Title */}
-        <div className="absolute top-[100px] md:top-[108px]  lg:top-[139px] xl:top-[180px] 2xl:top-[220px] sm:top-[100px] w-full text-center">
-          <h2 className="text-2xl md:text-2xl lg:text-5xl sm:text-4xl font-bold uppercase text-black ">
-            {/* BEST DEALS OF THE WEEK! */}
-          {flashDeals[0]?.title}
+        <div className="absolute top-[100px] md:top-[108px] lg:top-[139px] xl:top-[180px] 2xl:top-[220px] sm:top-[100px] w-full text-center">
+          <h2 className="text-2xl md:text-2xl lg:text-5xl sm:text-4xl font-bold uppercase text-black">
+            {flashDeals[0]?.title || "BEST DEALS OF THE WEEK!"}
           </h2>
         </div>
       </div>
+
       {/* Error State */}
       {error && (
         <div className="container mx-auto px-4">
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm text-center">
             <div className="font-semibold">⚠️ API Error</div>
             <div>{error}</div>
+            {localStorage.getItem("flash-deals") && (
+              <div className="mt-2 text-green-600">
+                Showing cached data as fallback
+              </div>
+            )}
           </div>
         </div>
       )}
+
       {/* Loading State */}
       {loading && (
         <div className="flex justify-center items-center h-40">
-          <div className="w-12 h-12 border-4 border-main  rounded-full animate-spin"></div>
+          <div className="w-12 h-12 border-4 border-main rounded-full animate-spin"></div>
         </div>
       )}
 
       {/* Products Grid */}
-      {!loading &&
-        !error &&
-        allProducts.length > 0 &&
-         (
-          <div className="container mx-auto px-4 pb-12 absolute w-full left-0 top-[60%]">
-            <div className="relative">
-              <Swiper
-                modules={[Navigation, Autoplay]}
-                autoplay={{ delay: 6500 }}
-                spaceBetween={20}
-                slidesPerView={6}
-                navigation={{
-                  nextEl: ".custom-next",
-                  prevEl: ".custom-prev",
-                }}
-                breakpoints={{
-                  320: { slidesPerView: 2 },
-                  640: { slidesPerView: 3 },
-                  768: { slidesPerView: 4 },
-                  1024: { slidesPerView: 5 },
-                  1280: { slidesPerView: 6 },
-                }}
-                className="featured-swiper"
-               >
-                {allProducts.map((prod) => (
-                  <SwiperSlide key={prod.id}>
+      {!loading && !error && allProducts.length > 0 && (
+        <div className="container mx-auto px-4 pb-12 absolute w-full left-0 top-[60%]">
+          <div className="relative">
+            <Swiper
+              modules={[Navigation, Autoplay]}
+              autoplay={{ delay: 6500 }}
+              spaceBetween={20}
+              slidesPerView={6}
+              navigation={{
+                nextEl: ".custom-next",
+                prevEl: ".custom-prev",
+              }}
+              breakpoints={{
+                320: { slidesPerView: 2 },
+                640: { slidesPerView: 3 },
+                768: { slidesPerView: 4 },
+                1024: { slidesPerView: 5 },
+                1280: { slidesPerView: 6 },
+              }}
+              className="best-deal-swiper"
+            >
+              {allProducts.map((prod) => (
+                <SwiperSlide key={prod.id}>
                   <ProductCard1
                     item={{
                       id: prod.id,
                       slug: prod.details || prod.slug,
-                      title: prod.name,
-                      img: prod.image,
-                      price: prod.price,
+                      name: prod.name,
+                      thumbnail_image: prod.image,
+                      main_price: prod.price,
+                      added_by: prod.added_by,
                     }}
                   />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
 
-              
-              {/* Custom Navigation Buttons */}
-             <button className="custom-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white hover:bg-gray-50 shadow-lg rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 border border-gray-200 hover:shadow-xl">
+            {/* Custom Navigation Buttons */}
+            <button className="custom-prev cursor-pointer absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white hover:bg-gray-50 shadow-lg rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 border border-gray-200 hover:shadow-xl">
               <svg
                 className="w-5 h-5 text-gray-700"
                 fill="none"
@@ -213,7 +304,7 @@ useEffect(() => {
               </svg>
             </button>
 
-            <button className="custom-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white hover:bg-gray-50 shadow-lg rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 border border-gray-200 hover:shadow-xl">
+            <button className="custom-next cursor-pointer absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white hover:bg-gray-50 shadow-lg rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 border border-gray-200 hover:shadow-xl">
               <svg
                 className="w-5 h-5 text-gray-700"
                 fill="none"
@@ -228,14 +319,14 @@ useEffect(() => {
                 />
               </svg>
             </button>
-
-            </div>
           </div>
-        )}
+        </div>
+      )}
+
       {/* No Products State */}
       {!loading && flashDeals.length === 0 && !error && (
         <div className="flex justify-center items-center py-10 text-gray-600">
-          No featured products found.
+          No flash deals found.
         </div>
       )}
     </div>
