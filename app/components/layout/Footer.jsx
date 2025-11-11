@@ -104,12 +104,12 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/" className="hover:text-white">
+              <Link href="/wishlist" className="hover:text-white">
                 My Wishlist
               </Link>
             </li>
             <li>
-              <Link href="/" className="hover:text-white">
+              <Link href="/track-order" className="hover:text-white">
                 Track Order
               </Link>
             </li>
