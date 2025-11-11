@@ -65,7 +65,7 @@ export default function BestDeals() {
       if (data?.success) {
         localStorage.setItem(cacheKey, JSON.stringify(data));
         localStorage.setItem(`${cacheKey}-time`, Date.now().toString());
-        console.log(` Cached fresh data for ${cacheKey}`);
+        // console.log(` Cached fresh data for ${cacheKey}`);
       }
       
       return data;
@@ -120,7 +120,7 @@ export default function BestDeals() {
         const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/flash-deals`;
         const data = await fetchWithCache(apiUrl, "flash-deals", 8000);
 
-        console.log("Flash Deals API Response:", data);
+        
 
         if (data.success && data.data) {
           setFlashDeals(data.data);
@@ -200,7 +200,7 @@ export default function BestDeals() {
         </div>
       )} */}
 
-      <div className="w-full h-[170px] sm:h-[250px] md:h-[225px] lg:h-[317px] xl:h-[409px] 2xl:h-[490px] flex justify-center overflow-hidden rounded-2xl">
+      <div className="relative  w-full h-[170px] sm:h-[250px] md:h-[225px] lg:h-[317px] xl:h-[409px] 2xl:h-[490px] flex justify-center overflow-hidden rounded-2xl">
         <Image
           src={best_deal}
           alt="Best Deal"
@@ -210,18 +210,18 @@ export default function BestDeals() {
         />
 
         {/* Floating Timer Box */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-2 flex flex-col items-center">
-          <div className="border border-red-400 text-red-500 text-[13px] font-medium px-3 pt-[3px] rounded-full">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 px-4 py-0 md:py-1 flex flex-col items-center">
+          <div className="border border-red-400 text-red-500 text-[10px] md:text-[10px] 2xl:text-[13px] px-1 2xl:px-4 md:px-3 py-0 md:py-0 rounded-full">
             Offer Ends In:
           </div>
-          <p className="text-black text-sm md:text-[15px] lg:text-[32px] xl:text-[45px] sm:text-2xl font-bold tracking-wider pt-3 md:pt-5">
+          <p className="text-black text-sm md:text-[18px] lg:text-[32px] xl:text-[35px] sm:text-2xl font-bold tracking-wider pt-1 xl:pt-2 2xl:pt-5 md:pt-1 lg:pt-1 ">
             {timeLeft || "Loading..."}
           </p>
         </div>
 
         {/* Section Title */}
-        <div className="absolute top-[100px] md:top-[108px] lg:top-[139px] xl:top-[180px] 2xl:top-[220px] sm:top-[100px] w-full text-center">
-          <h2 className="text-2xl md:text-2xl lg:text-5xl sm:text-4xl font-bold uppercase text-black">
+        <div className="absolute top-[60px] sm:top-[88px] md:top-[80px] lg:top-[114px] xl:top-[150px] 2xl:top-[190px] w-full text-center">
+          <h2 className="text-md md:text-2xl 2xl:text-5xl lg:text-4xl sm:text-3xl font-bold uppercase text-black">
             {flashDeals[0]?.title || "BEST DEALS OF THE WEEK!"}
           </h2>
         </div>

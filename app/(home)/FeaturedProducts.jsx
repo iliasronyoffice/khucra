@@ -1,105 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import ProductCard1 from "../components/layout/ProductCard1";
 import Link from "next/link";
+import useCachedFetch from "@/app/utils/useCachedFetch"; // adjust path
 
 export default function FeaturedProducts() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const { data: products, loading, error } = useCachedFetch(
+  `${process.env.NEXT_PUBLIC_API_URL}/products/featured`,
+  "featured-products",
+  5 * 60 * 1000 // 5 minutes cache
+);
 
-  // Fetch featured products from API
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v2/products/featured`;
-  //       const res = await fetch(apiUrl, {
-  //         method: "GET",
-  //         headers: {
-  //           "Accept": "application/json",
-  //           "Content-Type": "application/json",
-  //         },
-  //         credentials: 'omit',
-  //         mode: 'cors',
-  //       });
-
-  //       if (!res.ok) {
-  //         throw new Error(`HTTP error! status: ${res.status}`);
-  //       }
-
-  //       const data = await res.json();
-  //       console.log(" API Response:", data);
-
-  //       if (data.success && data.data) {
-  //         setProducts(data.data);
-  //         setError(null);
-  //       } else {
-  //         throw new Error("Invalid response format from API");
-  //       }
-
-  //     } catch (error) {
-  //       console.error(" Error fetching products:", error);
-  //       setError(error.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchProducts();
-  // }, []);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      // Check cache first
-      const cacheKey = 'featured-products';
-      const cached = localStorage.getItem(cacheKey);
-      const cacheTime = localStorage.getItem(`${cacheKey}-time`);
-      
-      // Use cache if less than 5 minutes old
-      if (cached && cacheTime && Date.now() - cacheTime < 5 * 60 * 1000) {
-        setProducts(JSON.parse(cached));
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/products/featured`;
-        const res = await fetch(apiUrl, {
-          method: "GET",
-          headers: {
-            "Accept": "application/json",
-          },
-          credentials: 'omit',
-        });
-
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-        const data = await res.json();
-        
-        if (data.success && data.data) {
-          setProducts(data.data);
-          // Cache the response
-          localStorage.setItem(cacheKey, JSON.stringify(data.data));
-          localStorage.setItem(`${cacheKey}-time`, Date.now());
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        // Fallback to cache even if expired
-        if (cached) {
-          setProducts(JSON.parse(cached));
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   // Swiper progress bar effect
   useEffect(() => {
@@ -111,7 +27,7 @@ export default function FeaturedProducts() {
         const bar = document.getElementById("featured-progress");
         if (!bar) return;
 
-        const totalSlides = products.length;
+        const totalSlides = products?.length || 0;
         const slidesPerView = swiper.params.slidesPerView;
         const maxIndex = Math.max(totalSlides - slidesPerView, 1);
         const progress = (swiper.activeIndex / maxIndex) * 100;
@@ -122,7 +38,7 @@ export default function FeaturedProducts() {
       swiper.on("init", updateProgress);
     };
 
-    if (!loading && products.length > 0) {
+    if (!loading && products?.length > 0) {
       setTimeout(initializeProgressBar, 100);
     }
   }, [products, loading]);
@@ -131,43 +47,38 @@ export default function FeaturedProducts() {
     <div>
       <div className="featured-product-section container mx-auto px-4 py-8">
         <div className="featured-header flex justify-between items-center">
-          <h2 className="text-3xl font-bold mb-4">Featured Products</h2>
+          <h2 className="md:text-3xl text-lg font-bold mb-4 items-center">Featured Products</h2>
           <div className="sell-all-section">
             <span className="flex items-center gap-2 cursor-pointer bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition">
-              <span className="bg-white p-2 rounded-md">
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15 1.25C15 1.625 14.875 1.875 14.625 2.125L2.125 14.625C1.625 15.125 0.875001 15.125 0.375001 14.625C-0.124999 14.125 -0.124999 13.375 0.375001 12.875L12.875 0.375C13.375 -0.125 14.125 -0.125 14.625 0.375C14.875 0.625 15 0.875001 15 1.25Z"
-                    fill="#1F1F1F"
-                  />
-                  <path
-                    d="M15 1.25L15 12.5C15 13.25 14.5 13.75 13.75 13.75C13 13.75 12.5 13.25 12.5 12.5L12.5 2.5L2.5 2.5C1.75 2.5 1.25 2 1.25 1.25C1.25 0.500002 1.75 1.58749e-06 2.5 1.55471e-06L13.75 1.06295e-06C14.5 1.03017e-06 15 0.500001 15 1.25Z"
-                    fill="#1F1F1F"
-                  />
-                </svg>
-              </span>
-              <Link href="/products" className="hover:underline">
+              <span className="bg-white p-1 md:p-2 rounded-md">
+                {/* SVG Icon */}
+                 
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15 1.25C15 1.625 14.875 1.875 14.625 2.125L2.125 14.625C1.625 15.125 0.875001 15.125 0.375001 14.625C-0.124999 14.125 -0.124999 13.375 0.375001 12.875L12.875 0.375C13.375 -0.125 14.125 -0.125 14.625 0.375C14.875 0.625 15 0.875001 15 1.25Z"
+                      fill="#1F1F1F"
+                    />
+                    <path
+                      d="M15 1.25L15 12.5C15 13.25 14.5 13.75 13.75 13.75C13 13.75 12.5 13.25 12.5 12.5L12.5 2.5L2.5 2.5C1.75 2.5 1.25 2 1.25 1.25C1.25 0.500002 1.75 1.58749e-06 2.5 1.55471e-06L13.75 1.06295e-06C14.5 1.03017e-06 15 0.500001 15 1.25Z"
+                      fill="#1F1F1F"
+                    />
+                  </svg>
+                </span>
+          
+              <Link href="/" className="hover:underline text-xs md:text-xl">
+                
                 See All
               </Link>
             </span>
           </div>
         </div>
       </div>
-
-      {/* Debug Info - Only show in development */}
-      {/* {process.env.NODE_ENV === 'development' && (
-        <div className="container mx-auto px-4">
-          <div className="text-xs text-gray-500 bg-gray-50 p-2 rounded mb-2">
-            Status: Connected to: {process.env.NEXT_PUBLIC_API_URL}/api/v2/products/featured
-          </div>
-        </div>
-      )} */}
 
       {/* Error State */}
       {error && (
@@ -187,7 +98,7 @@ export default function FeaturedProducts() {
       )}
 
       {/* Product Swiper */}
-      {!loading && products.length > 0 && (
+      {!loading && products?.length > 0 && (
         <div className="container mx-auto px-4 pb-12">
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -206,9 +117,7 @@ export default function FeaturedProducts() {
           >
             {products.map((item) => (
               <SwiperSlide key={item.id}>
-                <ProductCard1
-                  item={item}
-                />
+                <ProductCard1 item={item} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -221,7 +130,7 @@ export default function FeaturedProducts() {
       )}
 
       {/* No Products State */}
-      {!loading && products.length === 0 && !error && (
+      {!loading && products?.length === 0 && !error && (
         <div className="flex justify-center items-center py-10 text-gray-600">
           No featured products found.
         </div>

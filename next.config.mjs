@@ -5,18 +5,17 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: 'localhost',
-        pathname: '/**',
+        port: '', // leave empty if using default port 3000
+        pathname: '/genmart_october/uploads/**',
       },
       {
-        protocol: 'http', 
-        hostname: '127.0.0.1',
+        protocol: 'http',
+        hostname: 'genmartbd.com',
         pathname: '/**',
       },
     ],
-    // Optional: Disable image optimization if still having issues
     unoptimized: process.env.NODE_ENV === 'development',
   },
-}
+};
 
-
-export default nextConfig
+export default nextConfig;

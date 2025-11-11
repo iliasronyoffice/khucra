@@ -170,7 +170,7 @@ export default function JustForYou() {
       {/* Products Grid */}
       {!loading && !error && (
         <>
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 2xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 gap-4">
             {visibleProducts.map((item) => (
               <ProductCard1
                 key={item.id}

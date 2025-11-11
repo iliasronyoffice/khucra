@@ -15,10 +15,8 @@ export default function Home() {
       <FeaturedProducts />
       <SecondBanner />
       <BestDeals />
-
-      
       <JustForYou />
-      {/* <CategoryWiseProducts/> */}
+      <CategoryWiseProducts/>
       <TopSellers />
       <OurBrands />
     </div>

@@ -72,12 +72,12 @@ export default function Slider() {
       try {
         const [sliderData, bannerData] = await Promise.all([
           fetchWithCache(
-            "http://localhost/genmart_october/sliders", 
+            `${process.env.NEXT_PUBLIC_API_URL}/sliders`, 
             "slider-data",
             6000
           ),
           fetchWithCache(
-            "http://localhost/genmart_october/banners-one", 
+            `${process.env.NEXT_PUBLIC_API_URL}/banners-one`, 
             "banner-data",
             6000
           ),

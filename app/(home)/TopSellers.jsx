@@ -4,82 +4,42 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import brand_logo from "../../public/seller_logo.png";
-
+import TopSellersCardBox from "../components/layout/TopSellersCardBox";
+import useCachedFetch from "@/app/utils/useCachedFetch"; // Adjust the path if needed
 import { useEffect } from "react";
 
-import TopSellersCardBox from "../components/layout/TopSellersCardBox";
-
 export default function TopSellers() {
+  // Fetch top sellers dynamically with caching
+  const { data: top_sellers, loading, error } = useCachedFetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/seller/top`,
+    "top_sellers_cache",
+     5 * 60 * 1000 
+
+  );
+
   useEffect(() => {
     const swiper = document.querySelector(".seller-swiper")?.swiper;
-    if (!swiper) return;
+    if (!swiper || !top_sellers) return;
 
     swiper.on("slideChange", () => {
       const progress =
-        (swiper.activeIndex /
-          (top_sellers.length - swiper.params.slidesPerView)) *
+        (swiper.activeIndex / (top_sellers.length - swiper.params.slidesPerView)) *
         100;
       const bar = document.getElementById("seller-progress");
       if (bar) bar.style.width = `${progress}%`;
     });
-  }, []);
+  }, [top_sellers]);
 
-  const top_sellers = [
-    {
-      id: 1,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 2,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 3,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 4,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 5,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 6,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 7,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-    {
-      id: 8,
-      title: "Louis Vuitton",
-      img: brand_logo,
-    },
-  ];
+  if (loading) return <div className="text-center py-8">Loading top sellers...</div>;
+  if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
+
   return (
-    <div className="overflow-hidden">
-      <div className="top-seller-product-section container mx-auto px-4 py-8">
-        <div className="top-seller-header ">
-          <div className="featured-title">
-            <h2 className="text-3xl font-bold mb-4">Our Top Sellers</h2>
-          </div>
+    <div className="overflow-hidden container mx-auto px-4 py-8">
+      <div className="top-seller-product-section ">
+        <div className="featured-title">
+          <h2 className="text-lg md:text-3xl font-bold mb-4">Our Top Sellers</h2>
         </div>
       </div>
-
-      {/* top_sellers Grid - to be implemented */}
 
       <div className="container mx-auto px-4 md:px-0 mb-10 relative">
         <Swiper
@@ -91,7 +51,6 @@ export default function TopSellers() {
             nextEl: ".custom-seller-next",
             prevEl: ".custom-seller-prev",
           }}
-          pagination={false}
           breakpoints={{
             320: { slidesPerView: 2 },
             640: { slidesPerView: 3 },
@@ -103,7 +62,14 @@ export default function TopSellers() {
         >
           {top_sellers.map((item) => (
             <SwiperSlide key={item.id}>
-              <TopSellersCardBox item={item} />
+              <TopSellersCardBox
+                item={{
+                  title: item.name,
+                  img: item.logo,
+                  rating: item.rating,
+                  slug: item.slug,
+                }}
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -116,12 +82,7 @@ export default function TopSellers() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
@@ -132,21 +93,13 @@ export default function TopSellers() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
 
         {/* Bottom Indicator Line */}
         <div className="w-full h-[3px] bg-gray-200 mt-6 rounded-2xl">
-          <div
-            id="seller-progress"
-            className="h-full bg-black w-0 rounded-2xl"
-          ></div>
+          <div id="seller-progress" className="h-full bg-black w-0 rounded-2xl"></div>
         </div>
       </div>
     </div>

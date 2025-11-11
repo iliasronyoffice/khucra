@@ -18,15 +18,13 @@ export default function ProductCard1({ item }) {
             {item.tag}
           </span>
         )} */}
-
-        {/* Product Image */}
-        <div className="w-full aspect-[4/3] relative">
+        <div className="relative w-full h-[150px] md:h-[180px] 2xl:h-[220px] overflow-hidden">
           <Image
             src={item.thumbnail_image}
             alt={item.name}
-            width={400}
-            height={300}
-            className="w-full h-auto rounded-t-xl object-cover"
+            fill
+            className="object-cover rounded-t-xl"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
 
@@ -60,18 +58,18 @@ export default function ProductCard1({ item }) {
           <div className="price-and-cart flex justify-between items-center mt-3">
             {/* Price */}
             <div className="flex items-center gap-1">
-              <span className="font-bold md:text-[12px] 2xl:text-[15px] text-xs ">
+              <span className="font-bold sm:text-[8px] md:text-[12px] 2xl:text-[15px] text-[11px] ">
                 {item.main_price}
               </span>
               {item.stroked_price && (
-                <span className="text-xs text-gray-400 line-through md:text-[10px] 2xl:text-[12px]">
+                <span className="text-[8px] text-gray-400 line-through sm:text-[8px] md:text-[10px] 2xl:text-[12px]">
                   {item.stroked_price}
                 </span>
               )}
             </div>
 
             {/* Add Cart Button */}
-            <button className="flex items-center gap-1 bg-main text-white text-[12px] font-medium px-3 py-1 rounded-md hover:bg-[#150435] transition">
+            <button className="flex items-center gap-1 bg-main text-white text-[12px] 2xl:text-[12px] md:text-[9px] lg:text-[12px] font-medium px-3 md:px-1 lg:px-3 2xl:px- py-1 rounded-md hover:bg-[#150435] transition">
               <svg
                 width="11"
                 height="9"

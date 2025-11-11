@@ -123,7 +123,7 @@ export default function YouMayAlsoLike() {
       <div className="featured-product-section container mx-auto px-4 py-8">
         <div className="featured-header flex justify-between items-center ">
           <div className="featured-title">
-            <h2 className="text-3xl font-bold mb-4">You May Also Like</h2>
+            <h2 className="text-lg md:text-3xl font-bold mb-4">You May Also Like</h2>
           </div>
           <div className="sell-all-section ">
             <span className="flex items-center gap-2 cursor-pointer bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition">
@@ -147,6 +147,24 @@ export default function YouMayAlsoLike() {
                 </svg>
               </span>
               <Link href="/" className=" hover:underline">
+              <span className="bg-white p-2 rounded-md">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15 1.25C15 1.625 14.875 1.875 14.625 2.125L2.125 14.625C1.625 15.125 0.875001 15.125 0.375001 14.625C-0.124999 14.125 -0.124999 13.375 0.375001 12.875L12.875 0.375C13.375 -0.125 14.125 -0.125 14.625 0.375C14.875 0.625 15 0.875001 15 1.25Z"
+                      fill="#1F1F1F"
+                    />
+                    <path
+                      d="M15 1.25L15 12.5C15 13.25 14.5 13.75 13.75 13.75C13 13.75 12.5 13.25 12.5 12.5L12.5 2.5L2.5 2.5C1.75 2.5 1.25 2 1.25 1.25C1.25 0.500002 1.75 1.58749e-06 2.5 1.55471e-06L13.75 1.06295e-06C14.5 1.03017e-06 15 0.500001 15 1.25Z"
+                      fill="#1F1F1F"
+                    />
+                  </svg>
+                </span>
                 See All
               </Link>
             </span>
