@@ -1,10 +1,10 @@
 "use client";
 import Breadcrumb from "@/app/components/layout/Breadcrumb";
-import BrandCard from "../components/layout/BrandCard";
-import useCachedFetch from "../utils/useCachedFetch"; 
+import BrandCard from "@/app/components/layout/BrandCard";
+import useCachedFetch from "@/app/utils/useCachedFetch"; 
 
 
-export default function OurBrands() {
+export default function AllBrands() {
   const { data: brands, loading, error } = useCachedFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/brands`,
     "brands_cache",
@@ -27,10 +27,10 @@ export default function OurBrands() {
       
             {/* Title */}
             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 md:mb-4 py-3 md:py-5">
-              Your Wishlist
+              Brands
             </h1>
             <p className="mb-4 md:mb-6 text-sm md:text-base">
-              There Are <span className="text-red-400">02</span> Products in This List
+              Discover top brands all in one place
             </p>
 
       <div className="container mx-auto px-4 md:px-0 mb-10 relative grid grid-cols-6 gap-4">

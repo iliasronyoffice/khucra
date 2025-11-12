@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import BrandCard from "../components/layout/BrandCard";
 import useCachedFetch from "../utils/useCachedFetch"; 
 import { useState } from "react";
+import Link from "next/link";
 
 export default function OurBrands() {
   const { data: brands, loading, error } = useCachedFetch(
@@ -22,9 +23,42 @@ export default function OurBrands() {
 
   return (
     <div className="overflow-hidden container mx-auto px-4 py-8">
-      <div className="">
+      {/* <div className="">
         <h2 className="text-lg md:text-3xl font-bold mb-4">Our Brands</h2>
-      </div>
+      </div> */}
+
+      <div className="category-header flex justify-between items-center">
+            <div className="category-title">
+              <h2 className="text-lg md:text-3xl font-bold mb-4">
+                Our Brands
+              </h2>
+            </div>
+            <div className="see-all-section">
+              <Link
+                href="/all-brands"
+                className="flex items-center gap-2 cursor-pointer bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 transition"
+              >
+                <span className="bg-white md:p-2 p-1 rounded-md">
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15 1.25C15 1.625 14.875 1.875 14.625 2.125L2.125 14.625C1.625 15.125 0.875001 15.125 0.375001 14.625C-0.124999 14.125 -0.124999 13.375 0.375001 12.875L12.875 0.375C13.375 -0.125 14.125 -0.125 14.625 0.375C14.875 0.625 15 0.875001 15 1.25Z"
+                      fill="#1F1F1F"
+                    />
+                    <path
+                      d="M15 1.25L15 12.5C15 13.25 14.5 13.75 13.75 13.75C13 13.75 12.5 13.25 12.5 12.5L12.5 2.5L2.5 2.5C1.75 2.5 1.25 2 1.25 1.25C1.25 0.500002 1.75 1.58749e-06 2.5 1.55471e-06L13.75 1.06295e-06C14.5 1.03017e-06 15 0.500001 15 1.25Z"
+                      fill="#1F1F1F"
+                    />
+                  </svg>
+                </span> <span className="text-xs md:text-xl"> See All</span>
+              </Link>
+            </div>
+          </div>
 
       <div className="container mx-auto px-4 md:px-0 mb-10 relative">
         <Swiper
