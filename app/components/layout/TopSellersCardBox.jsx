@@ -36,7 +36,7 @@ export default function TopSellersCardBox({ item }) {
         </div>
 
         {/* Visit Store Button */}
-        <Link href={`/${item.slug || ""}`} className="mt-2">
+        <Link href={`/shop/${item.slug}`} className="mt-2">
           <div className="visit-btn bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
             <div className="visit-section flex justify-between items-center p-2">
               <div className="text-sm font-medium uppercase text-center w-full">

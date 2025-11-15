@@ -5,8 +5,8 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '', // leave empty if using default port 3000
-        pathname: '/genmart_october/uploads/**',
+        port: '', // leave empty if using default port 80
+        pathname: '/genmart_october/public/uploads/all/**',
       },
       {
         protocol: 'http',
