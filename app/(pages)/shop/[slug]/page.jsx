@@ -2,20 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import Breadcrumb from "@/app/components/layout/Breadcrumb";
-import HeaderCard from "@/app/components/layout/HeaderCard";
+import HeaderCard from "@/app/components/seller/HeaderCard"; // Make sure this path is correct
 import SellerFeaturedProducts from "@/app/components/seller/SellerFeaturedProducts";
-import Image from "next/image";
 import SellerBanner from "@/app/components/seller/SellerBanner";
 import CouponList from "@/app/components/seller/CouponList";
 import SellerNewestProducts from "@/app/components/seller/SellerNewestProducts";
+import SellerTopSellingProducts from "@/app/components/seller/SellerTopSellingProducts";
+import SellerAllProducts from "@/app/components/seller/SellerAllProducts";
 
 export default function SellerPage({ params }) {
-  // Unwrap the params promise using React.use()
   const unwrappedParams = React.use(params);
   const [shopId, setShopId] = useState(null);
   const [shopData, setShopData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("STORE HOME");
 
   useEffect(() => {
     const fetchShopId = async () => {
@@ -28,7 +29,6 @@ export default function SellerPage({ params }) {
 
         const response = await res.json();
 
-        // Check if the API call was successful and data exists
         if (response.success && response.data) {
           setShopId(response.data.id);
           setShopData(response.data);
@@ -44,6 +44,36 @@ export default function SellerPage({ params }) {
 
     fetchShopId();
   }, [unwrappedParams.slug]);
+
+  const renderContent = () => {
+    if (!shopId) {
+      return <div className="text-center py-10 text-gray-600">Shop not found.</div>;
+    }
+
+    switch (activeTab) {
+      case "STORE HOME":
+        return (
+          <>
+            <SellerFeaturedProducts shopId={shopId} />
+            <SellerBanner shopData={shopData} />
+            <CouponList shopId={shopId} />
+            <SellerNewestProducts shopId={shopId} />
+          </>
+        );
+      
+      case "TOP SELLING":
+        return <SellerTopSellingProducts shopId={shopId} />;
+      
+      case "COUPONS":
+        return <CouponList shopId={shopId} />;
+      
+      case "ALL PRODUCTS":
+        return <SellerAllProducts shopId={shopId} />;
+      
+      default:
+        return null;
+    }
+  };
 
   if (loading) {
     return (
@@ -66,17 +96,12 @@ export default function SellerPage({ params }) {
   return (
     <section className="p-6 container mx-auto">
       <Breadcrumb />
-      <HeaderCard shopData={shopData} />
-      {shopId ? (
-        <SellerFeaturedProducts shopId={shopId} />
-      ) : (
-        <div className="text-center py-10 text-gray-600">Shop not found.</div>
-      )}
-    
-       <SellerBanner shopData={shopData}></SellerBanner>
-       <CouponList shopId={shopId} />
-
-       <SellerNewestProducts shopId={shopId}></SellerNewestProducts>
+      <HeaderCard 
+        shopData={shopData} 
+        activeTab={activeTab} 
+        onTabChange={setActiveTab} 
+      />
+      {renderContent()}
     </section>
   );
 }

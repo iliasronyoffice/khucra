@@ -1,11 +1,18 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import seller_logo from "@/public/seller.png";
 
-export default function HeaderCard() {
-  const [activeTab, setActiveTab] = useState("STORE HOME");
+export default function HeaderCard({ shopData, activeTab = "STORE HOME", onTabChange }) {
   const tabs = ["STORE HOME", "TOP SELLING", "COUPONS", "ALL PRODUCTS"];
+  
+  // Safe default function if onTabChange is not provided
+  const handleTabChange = (tab) => {
+    if (onTabChange && typeof onTabChange === 'function') {
+      onTabChange(tab);
+    }
+  };
+
   return (
     <div>
       {/* Header Card */}
@@ -19,11 +26,15 @@ export default function HeaderCard() {
             />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-800">LOUIS VUITTON</h2>
+            <h2 className="text-2xl font-bold text-gray-800">
+              {shopData?.name || "LOUIS VUITTON"}
+            </h2>
             <span>
               <span className="text-yellow-400/70">★★★★★</span> 5.00 avg. rating
             </span>
-            <p className="text-gray-500 text-sm">Dhaka, Bangladesh</p>
+            <p className="text-gray-500 text-sm">
+              {shopData?.address || "Dhaka, Bangladesh"}
+            </p>
           </div>
         </div>
         <div className="grid grid-cols-3 md:flex md:flex-row gap-8 text-center text-sm divide-x divide-gray-400">
@@ -48,7 +59,6 @@ export default function HeaderCard() {
                 fill="#19073B"
               />
             </svg>
-
             <p className="text-gray-500">Follow Seller</p>
           </div>
 
@@ -75,7 +85,7 @@ export default function HeaderCard() {
         {tabs.map((tab, i) => (
           <button
             key={i}
-            onClick={() => setActiveTab(tab)}
+            onClick={() => handleTabChange(tab)}
             className={`px-3 py-2 rounded-lg text-xs font-medium ${
               tab === activeTab
                 ? "bg-white text-gray-900 shadow-sm"
