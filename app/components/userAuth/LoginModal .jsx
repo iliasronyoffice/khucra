@@ -115,7 +115,8 @@ export default function LoginModal({ open, onClose, onSwitch }) {
 
         <button
           type="submit"
-          className="w-full bg-main text-white py-3 rounded-xl cursor-pointer"
+          className="w-full bg-main text-white py-3 rounded-xl
+           cursor-pointer"
         >
           Login
         </button>

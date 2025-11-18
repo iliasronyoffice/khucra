@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import ServicePolicies from "./(home)/ServicePolicies";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }) {
       >
         <Header />
         {children}
+         <Toaster position="top-right" reverseOrder={false} />
         <ServicePolicies />
         <Footer />
       </body>
